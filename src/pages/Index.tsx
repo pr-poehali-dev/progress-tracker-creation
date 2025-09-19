@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -96,6 +96,45 @@ function Index() {
   const [newSkill, setNewSkill] = useState({ name: '', requiredXP: 100, xpPerUnit: 10 })
   const [newGoal, setNewGoal] = useState({ title: '', reward: 10, linkedSkillId: '' })
 
+  const playXPSound = useCallback(() => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    const oscillator = audioContext.createOscillator()
+    const gainNode = audioContext.createGain()
+    
+    oscillator.connect(gainNode)
+    gainNode.connect(audioContext.destination)
+    
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime)
+    oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1)
+    oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.2)
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2)
+    
+    oscillator.start(audioContext.currentTime)
+    oscillator.stop(audioContext.currentTime + 0.2)
+  }, [])
+
+  const playLevelUpSound = useCallback(() => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    const oscillator = audioContext.createOscillator()
+    const gainNode = audioContext.createGain()
+    
+    oscillator.connect(gainNode)
+    gainNode.connect(audioContext.destination)
+    
+    oscillator.frequency.setValueAtTime(523, audioContext.currentTime) // C5
+    oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1) // E5
+    oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2) // G5
+    oscillator.frequency.setValueAtTime(1047, audioContext.currentTime + 0.3) // C6
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5)
+    
+    oscillator.start(audioContext.currentTime)
+    oscillator.stop(audioContext.currentTime + 0.5)
+  }, [])
+
   const calculatePlayerLevelXP = (level: number) => {
     return Math.floor(1000 * Math.pow(1.2, level - 1))
   }
@@ -105,6 +144,9 @@ function Index() {
   }
 
   const addXPToSkill = (skillId: string, amount: number) => {
+    playXPSound()
+    let leveledUp = false
+    
     setSkills(prevSkills => 
       prevSkills.map(skill => {
         if (skill.id === skillId) {
@@ -116,6 +158,11 @@ function Index() {
             newCurrentXP -= newRequiredXP
             newLevel++
             newRequiredXP = calculateSkillLevelXP(newLevel)
+            leveledUp = true
+          }
+
+          if (leveledUp) {
+            setTimeout(() => playLevelUpSound(), 300)
           }
 
           addPlayerXP(amount)
@@ -189,6 +236,7 @@ function Index() {
   const completeGoal = (goalId: string) => {
     const goal = goals.find(g => g.id === goalId)
     if (goal && !goal.completed) {
+      playLevelUpSound()
       addXPToSkill(goal.linkedSkillId, goal.reward)
       setGoals(prevGoals =>
         prevGoals.map(g =>
@@ -305,7 +353,7 @@ function Index() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="grid grid-cols-5 gap-2 text-sm text-gray-400 font-semibold">
+                    <div className="grid grid-cols-5 gap-2 text-sm text-gray-300 font-semibold">
                       <span>Название</span>
                       <span>Ур.</span>
                       <span>Опыт</span>
@@ -320,10 +368,10 @@ function Index() {
                         }`}
                         onClick={() => setSelectedSkill(selectedSkill === skill.id ? null : skill.id)}
                       >
-                        <span className="font-medium">{skill.name}</span>
-                        <span>{skill.level}</span>
-                        <span className="text-sm">{skill.currentXP} / {skill.requiredXP}</span>
-                        <span>{skill.xpPerUnit}</span>
+                        <span className="font-medium text-white">{skill.name}</span>
+                        <span className="text-white font-semibold">{skill.level}</span>
+                        <span className="text-sm text-gray-200">{skill.currentXP} / {skill.requiredXP}</span>
+                        <span className="text-white">{skill.xpPerUnit}</span>
                         <div className="flex gap-1">
                           <Button
                             size="sm"
@@ -446,7 +494,7 @@ function Index() {
                         }`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className={goal.completed ? 'line-through' : ''}>{goal.title}</span>
+                          <span className={goal.completed ? 'line-through text-gray-400' : 'text-white font-medium'}>{goal.title}</span>
                           <div className="flex gap-1">
                             {!goal.completed && (
                               <Button
