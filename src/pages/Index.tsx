@@ -211,21 +211,21 @@ function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-rpg-dark text-white">
+    <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6">
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-orbitron font-bold text-rpg-purple">RPG-Life Tracker</h1>
+          <h1 className="text-3xl font-orbitron font-bold text-purple-400">RPG-Life Tracker</h1>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
-            <TabsList className="bg-rpg-card border-rpg-border">
-              <TabsTrigger value="main" className="data-[state=active]:bg-rpg-purple">Главная</TabsTrigger>
-              <TabsTrigger value="rewards" className="data-[state=active]:bg-rpg-purple">Награды</TabsTrigger>
+            <TabsList className="bg-gray-800 border-gray-700">
+              <TabsTrigger value="main" className="data-[state=active]:bg-purple-600">Главная</TabsTrigger>
+              <TabsTrigger value="rewards" className="data-[state=active]:bg-purple-600">Награды</TabsTrigger>
             </TabsList>
           </Tabs>
         </header>
 
         <TabsContent value="main" className="space-y-6">
           {/* Player Stats */}
-          <Card className="bg-rpg-card border-rpg-border">
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <Input
@@ -233,7 +233,7 @@ function Index() {
                   onChange={(e) => setPlayer({ ...player, name: e.target.value })}
                   className="text-lg font-semibold bg-transparent border-none text-white p-0 h-auto"
                 />
-                <Badge variant="secondary" className="bg-rpg-purple text-white">
+                <Badge variant="secondary" className="bg-purple-600 text-white">
                   Уровень: {player.level}
                 </Badge>
               </div>
@@ -254,19 +254,19 @@ function Index() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Skills Section */}
-            <Card className="bg-rpg-card border-rpg-border">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-rpg-green flex items-center gap-2">
-                  <Icon name="Plus" size={20} />
+                <CardTitle className="text-green-400 flex items-center gap-2">
+                  <Icon name="Zap" size={20} />
                   Навыки
                 </CardTitle>
                 <Dialog open={isAddingSkill} onOpenChange={setIsAddingSkill}>
                   <DialogTrigger asChild>
-                    <Button size="sm" className="bg-rpg-green hover:bg-rpg-green/80">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
                       <Icon name="Plus" size={16} />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-rpg-card border-rpg-border text-white">
+                  <DialogContent className="bg-gray-800 border-gray-700 text-white">
                     <DialogHeader>
                       <DialogTitle>Добавить навык</DialogTitle>
                     </DialogHeader>
@@ -276,7 +276,7 @@ function Index() {
                         <Input
                           value={newSkill.name}
                           onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
-                          className="bg-rpg-dark border-rpg-border"
+                          className="bg-gray-900 border-gray-600"
                         />
                       </div>
                       <div>
@@ -285,7 +285,7 @@ function Index() {
                           type="number"
                           value={newSkill.requiredXP}
                           onChange={(e) => setNewSkill({ ...newSkill, requiredXP: parseInt(e.target.value) || 100 })}
-                          className="bg-rpg-dark border-rpg-border"
+                          className="bg-gray-900 border-gray-600"
                         />
                       </div>
                       <div>
@@ -294,10 +294,10 @@ function Index() {
                           type="number"
                           value={newSkill.xpPerUnit}
                           onChange={(e) => setNewSkill({ ...newSkill, xpPerUnit: parseInt(e.target.value) || 10 })}
-                          className="bg-rpg-dark border-rpg-border"
+                          className="bg-gray-900 border-gray-600"
                         />
                       </div>
-                      <Button onClick={addSkill} className="bg-rpg-green hover:bg-rpg-green/80">
+                      <Button onClick={addSkill} className="bg-green-600 hover:bg-green-700">
                         Добавить
                       </Button>
                     </div>
@@ -317,7 +317,7 @@ function Index() {
                     <div
                       key={skill.id}
                       className={`grid grid-cols-5 gap-2 p-3 rounded cursor-pointer transition-colors ${
-                        selectedSkill === skill.id ? 'bg-rpg-purple/20 border border-rpg-purple' : 'hover:bg-gray-700'
+                        selectedSkill === skill.id ? 'bg-purple-600/20 border border-purple-500' : 'hover:bg-gray-700'
                       }`}
                       onClick={() => setSelectedSkill(selectedSkill === skill.id ? null : skill.id)}
                     >
@@ -329,10 +329,9 @@ function Index() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-6 w-6 p-0 hover:bg-rpg-orange/20"
+                          className="h-6 w-6 p-0 hover:bg-orange-500/20"
                           onClick={(e) => {
                             e.stopPropagation()
-                            // Edit functionality can be added here
                           }}
                         >
                           <Icon name="Edit" size={12} />
@@ -354,24 +353,24 @@ function Index() {
                 </div>
 
                 {selectedSkill && (
-                  <div className="mt-6 p-4 bg-rpg-purple/10 border border-rpg-purple rounded">
+                  <div className="mt-6 p-4 bg-purple-600/10 border border-purple-500 rounded">
                     <h4 className="font-semibold mb-3">Добавить прогресс</h4>
                     <div className="flex gap-2">
                       <Button
                         onClick={() => addXPToSkill(selectedSkill, 1 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
-                        className="bg-rpg-green hover:bg-rpg-green/80"
+                        className="bg-green-600 hover:bg-green-700"
                       >
                         +1
                       </Button>
                       <Button
                         onClick={() => addXPToSkill(selectedSkill, 5 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
-                        className="bg-rpg-green hover:bg-rpg-green/80"
+                        className="bg-green-600 hover:bg-green-700"
                       >
                         +5
                       </Button>
                       <Button
                         onClick={() => addXPToSkill(selectedSkill, 10 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
-                        className="bg-rpg-green hover:bg-rpg-green/80"
+                        className="bg-green-600 hover:bg-green-700"
                       >
                         +10
                       </Button>
@@ -382,19 +381,19 @@ function Index() {
             </Card>
 
             {/* Goals Section */}
-            <Card className="bg-rpg-card border-rpg-border">
+            <Card className="bg-gray-800 border-gray-700">
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-rpg-orange flex items-center gap-2">
-                  <Icon name="Plus" size={20} />
+                <CardTitle className="text-orange-400 flex items-center gap-2">
+                  <Icon name="Target" size={20} />
                   Цели для: Словарный запас
                 </CardTitle>
                 <Dialog open={isAddingGoal} onOpenChange={setIsAddingGoal}>
                   <DialogTrigger asChild>
-                    <Button size="sm" className="bg-rpg-orange hover:bg-rpg-orange/80">
+                    <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
                       <Icon name="Plus" size={16} />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-rpg-card border-rpg-border text-white">
+                  <DialogContent className="bg-gray-800 border-gray-700 text-white">
                     <DialogHeader>
                       <DialogTitle>Добавить цель</DialogTitle>
                     </DialogHeader>
@@ -404,7 +403,7 @@ function Index() {
                         <Input
                           value={newGoal.title}
                           onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-                          className="bg-rpg-dark border-rpg-border"
+                          className="bg-gray-900 border-gray-600"
                         />
                       </div>
                       <div>
@@ -413,7 +412,7 @@ function Index() {
                           type="number"
                           value={newGoal.reward}
                           onChange={(e) => setNewGoal({ ...newGoal, reward: parseInt(e.target.value) || 10 })}
-                          className="bg-rpg-dark border-rpg-border"
+                          className="bg-gray-900 border-gray-600"
                         />
                       </div>
                       <div>
@@ -421,7 +420,7 @@ function Index() {
                         <select
                           value={newGoal.linkedSkillId}
                           onChange={(e) => setNewGoal({ ...newGoal, linkedSkillId: e.target.value })}
-                          className="w-full p-2 bg-rpg-dark border border-rpg-border rounded text-white"
+                          className="w-full p-2 bg-gray-900 border border-gray-600 rounded text-white"
                         >
                           <option value="">Выберите навык</option>
                           {skills.map(skill => (
@@ -429,7 +428,7 @@ function Index() {
                           ))}
                         </select>
                       </div>
-                      <Button onClick={addGoal} className="bg-rpg-orange hover:bg-rpg-orange/80">
+                      <Button onClick={addGoal} className="bg-orange-600 hover:bg-orange-700">
                         Добавить
                       </Button>
                     </div>
@@ -443,8 +442,8 @@ function Index() {
                       key={goal.id}
                       className={`p-3 rounded border transition-all ${
                         goal.completed 
-                          ? 'bg-rpg-green/10 border-rpg-green line-through opacity-60' 
-                          : 'bg-gray-700/50 border-rpg-border hover:border-rpg-orange'
+                          ? 'bg-green-600/10 border-green-500 line-through opacity-60' 
+                          : 'bg-gray-700/50 border-gray-600 hover:border-orange-500'
                       }`}
                     >
                       <div className="flex justify-between items-center">
@@ -453,7 +452,7 @@ function Index() {
                           {!goal.completed && (
                             <Button
                               size="sm"
-                              className="bg-rpg-green hover:bg-rpg-green/80"
+                              className="bg-green-600 hover:bg-green-700"
                               onClick={() => completeGoal(goal.id)}
                             >
                               <Icon name="Check" size={12} />
@@ -478,13 +477,13 @@ function Index() {
         </TabsContent>
 
         <TabsContent value="rewards" className="space-y-6">
-          <Card className="bg-rpg-card border-rpg-border">
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-rpg-orange">Награды</CardTitle>
+              <CardTitle className="text-orange-400">Награды</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12">
-                <Icon name="Star" size={48} className="mx-auto mb-4 text-rpg-orange" />
+                <Icon name="Star" size={48} className="mx-auto mb-4 text-orange-400" />
                 <h3 className="text-xl font-semibold mb-2">Система наград</h3>
                 <p className="text-gray-400">Здесь будут отображаться ваши достижения и награды</p>
               </div>
