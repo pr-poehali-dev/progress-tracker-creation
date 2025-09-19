@@ -6,7 +6,7 @@ export default {
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		"./src/**/*.{ts,tsx}"
 	],
 	prefix: "",
 	theme: {
@@ -61,7 +61,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'rpg-purple': '#8B5CF6',
+				'rpg-green': '#10B981',
+				'rpg-orange': '#F59E0B',
+				'rpg-dark': '#111827',
+				'rpg-card': '#1F2937',
+				'rpg-border': '#374151'
+			},
+			fontFamily: {
+				'orbitron': ['Orbitron', 'monospace']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
