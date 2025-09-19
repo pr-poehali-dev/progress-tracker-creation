@@ -213,283 +213,283 @@ function Index() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-orbitron font-bold text-purple-400">RPG-Life Tracker</h1>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <header className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-orbitron font-bold text-purple-400">RPG-Life Tracker</h1>
             <TabsList className="bg-gray-800 border-gray-700">
               <TabsTrigger value="main" className="data-[state=active]:bg-purple-600">Главная</TabsTrigger>
               <TabsTrigger value="rewards" className="data-[state=active]:bg-purple-600">Награды</TabsTrigger>
             </TabsList>
-          </Tabs>
-        </header>
+          </header>
 
-        <TabsContent value="main" className="space-y-6">
-          {/* Player Stats */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <Input
-                  value={player.name}
-                  onChange={(e) => setPlayer({ ...player, name: e.target.value })}
-                  className="text-lg font-semibold bg-transparent border-none text-white p-0 h-auto"
-                />
-                <Badge variant="secondary" className="bg-purple-600 text-white">
-                  Уровень: {player.level}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Progress 
-                  value={(player.currentXP / player.requiredXP) * 100} 
-                  className="h-4"
-                />
-                <div className="flex justify-between text-sm text-gray-400">
-                  <span>{player.currentXP} / {player.requiredXP} XP</span>
-                  <span>Общий XP: {player.totalXP}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Skills Section */}
+          <TabsContent value="main" className="space-y-6">
+            {/* Player Stats */}
             <Card className="bg-gray-800 border-gray-700">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-green-400 flex items-center gap-2">
-                  <Icon name="Zap" size={20} />
-                  Навыки
-                </CardTitle>
-                <Dialog open={isAddingSkill} onOpenChange={setIsAddingSkill}>
-                  <DialogTrigger asChild>
-                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                      <Icon name="Plus" size={16} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-gray-800 border-gray-700 text-white">
-                    <DialogHeader>
-                      <DialogTitle>Добавить навык</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label>Название навыка</Label>
-                        <Input
-                          value={newSkill.name}
-                          onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
-                          className="bg-gray-900 border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <Label>Опыт для 1 уровня</Label>
-                        <Input
-                          type="number"
-                          value={newSkill.requiredXP}
-                          onChange={(e) => setNewSkill({ ...newSkill, requiredXP: parseInt(e.target.value) || 100 })}
-                          className="bg-gray-900 border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <Label>XP за единицу</Label>
-                        <Input
-                          type="number"
-                          value={newSkill.xpPerUnit}
-                          onChange={(e) => setNewSkill({ ...newSkill, xpPerUnit: parseInt(e.target.value) || 10 })}
-                          className="bg-gray-900 border-gray-600"
-                        />
-                      </div>
-                      <Button onClick={addSkill} className="bg-green-600 hover:bg-green-700">
-                        Добавить
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <Input
+                    value={player.name}
+                    onChange={(e) => setPlayer({ ...player, name: e.target.value })}
+                    className="text-lg font-semibold bg-transparent border-none text-white p-0 h-auto"
+                  />
+                  <Badge variant="secondary" className="bg-purple-600 text-white">
+                    Уровень: {player.level}
+                  </Badge>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-5 gap-2 text-sm text-gray-400 font-semibold">
-                    <span>Название</span>
-                    <span>Ур.</span>
-                    <span>Опыт</span>
-                    <span>XP/ед.</span>
-                    <span>Действия</span>
+                <div className="space-y-2">
+                  <Progress 
+                    value={(player.currentXP / player.requiredXP) * 100} 
+                    className="h-4"
+                  />
+                  <div className="flex justify-between text-sm text-gray-400">
+                    <span>{player.currentXP} / {player.requiredXP} XP</span>
+                    <span>Общий XP: {player.totalXP}</span>
                   </div>
-                  {skills.map((skill) => (
-                    <div
-                      key={skill.id}
-                      className={`grid grid-cols-5 gap-2 p-3 rounded cursor-pointer transition-colors ${
-                        selectedSkill === skill.id ? 'bg-purple-600/20 border border-purple-500' : 'hover:bg-gray-700'
-                      }`}
-                      onClick={() => setSelectedSkill(selectedSkill === skill.id ? null : skill.id)}
-                    >
-                      <span className="font-medium">{skill.name}</span>
-                      <span>{skill.level}</span>
-                      <span className="text-sm">{skill.currentXP} / {skill.requiredXP}</span>
-                      <span>{skill.xpPerUnit}</span>
-                      <div className="flex gap-1">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 w-6 p-0 hover:bg-orange-500/20"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                          }}
-                        >
-                          <Icon name="Edit" size={12} />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 w-6 p-0 hover:bg-red-500/20"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            deleteSkill(skill.id)
-                          }}
-                        >
-                          <Icon name="Trash2" size={12} />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
                 </div>
-
-                {selectedSkill && (
-                  <div className="mt-6 p-4 bg-purple-600/10 border border-purple-500 rounded">
-                    <h4 className="font-semibold mb-3">Добавить прогресс</h4>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={() => addXPToSkill(selectedSkill, 1 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        +1
-                      </Button>
-                      <Button
-                        onClick={() => addXPToSkill(selectedSkill, 5 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        +5
-                      </Button>
-                      <Button
-                        onClick={() => addXPToSkill(selectedSkill, 10 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        +10
-                      </Button>
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
-            {/* Goals Section */}
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-orange-400 flex items-center gap-2">
-                  <Icon name="Target" size={20} />
-                  Цели для: Словарный запас
-                </CardTitle>
-                <Dialog open={isAddingGoal} onOpenChange={setIsAddingGoal}>
-                  <DialogTrigger asChild>
-                    <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-                      <Icon name="Plus" size={16} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-gray-800 border-gray-700 text-white">
-                    <DialogHeader>
-                      <DialogTitle>Добавить цель</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label>Название цели</Label>
-                        <Input
-                          value={newGoal.title}
-                          onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-                          className="bg-gray-900 border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <Label>Награда (XP)</Label>
-                        <Input
-                          type="number"
-                          value={newGoal.reward}
-                          onChange={(e) => setNewGoal({ ...newGoal, reward: parseInt(e.target.value) || 10 })}
-                          className="bg-gray-900 border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <Label>Связанный навык</Label>
-                        <select
-                          value={newGoal.linkedSkillId}
-                          onChange={(e) => setNewGoal({ ...newGoal, linkedSkillId: e.target.value })}
-                          className="w-full p-2 bg-gray-900 border border-gray-600 rounded text-white"
-                        >
-                          <option value="">Выберите навык</option>
-                          {skills.map(skill => (
-                            <option key={skill.id} value={skill.id}>{skill.name}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <Button onClick={addGoal} className="bg-orange-600 hover:bg-orange-700">
-                        Добавить
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Skills Section */}
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-green-400 flex items-center gap-2">
+                    <Icon name="Zap" size={20} />
+                    Навыки
+                  </CardTitle>
+                  <Dialog open={isAddingSkill} onOpenChange={setIsAddingSkill}>
+                    <DialogTrigger asChild>
+                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                        <Icon name="Plus" size={16} />
                       </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-gray-800 border-gray-700 text-white">
+                      <DialogHeader>
+                        <DialogTitle>Добавить навык</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Название навыка</Label>
+                          <Input
+                            value={newSkill.name}
+                            onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
+                            className="bg-gray-900 border-gray-600"
+                          />
+                        </div>
+                        <div>
+                          <Label>Опыт для 1 уровня</Label>
+                          <Input
+                            type="number"
+                            value={newSkill.requiredXP}
+                            onChange={(e) => setNewSkill({ ...newSkill, requiredXP: parseInt(e.target.value) || 100 })}
+                            className="bg-gray-900 border-gray-600"
+                          />
+                        </div>
+                        <div>
+                          <Label>XP за единицу</Label>
+                          <Input
+                            type="number"
+                            value={newSkill.xpPerUnit}
+                            onChange={(e) => setNewSkill({ ...newSkill, xpPerUnit: parseInt(e.target.value) || 10 })}
+                            className="bg-gray-900 border-gray-600"
+                          />
+                        </div>
+                        <Button onClick={addSkill} className="bg-green-600 hover:bg-green-700">
+                          Добавить
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-5 gap-2 text-sm text-gray-400 font-semibold">
+                      <span>Название</span>
+                      <span>Ур.</span>
+                      <span>Опыт</span>
+                      <span>XP/ед.</span>
+                      <span>Действия</span>
                     </div>
-                  </DialogContent>
-                </Dialog>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {goals.map((goal) => (
-                    <div
-                      key={goal.id}
-                      className={`p-3 rounded border transition-all ${
-                        goal.completed 
-                          ? 'bg-green-600/10 border-green-500 line-through opacity-60' 
-                          : 'bg-gray-700/50 border-gray-600 hover:border-orange-500'
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className={goal.completed ? 'line-through' : ''}>{goal.title}</span>
+                    {skills.map((skill) => (
+                      <div
+                        key={skill.id}
+                        className={`grid grid-cols-5 gap-2 p-3 rounded cursor-pointer transition-colors ${
+                          selectedSkill === skill.id ? 'bg-purple-600/20 border border-purple-500' : 'hover:bg-gray-700'
+                        }`}
+                        onClick={() => setSelectedSkill(selectedSkill === skill.id ? null : skill.id)}
+                      >
+                        <span className="font-medium">{skill.name}</span>
+                        <span>{skill.level}</span>
+                        <span className="text-sm">{skill.currentXP} / {skill.requiredXP}</span>
+                        <span>{skill.xpPerUnit}</span>
                         <div className="flex gap-1">
-                          {!goal.completed && (
-                            <Button
-                              size="sm"
-                              className="bg-green-600 hover:bg-green-700"
-                              onClick={() => completeGoal(goal.id)}
-                            >
-                              <Icon name="Check" size={12} />
-                            </Button>
-                          )}
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="hover:bg-red-500/20"
-                            onClick={() => deleteGoal(goal.id)}
+                            className="h-6 w-6 p-0 hover:bg-orange-500/20"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                            }}
+                          >
+                            <Icon name="Edit" size={12} />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-6 p-0 hover:bg-red-500/20"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              deleteSkill(skill.id)
+                            }}
                           >
                             <Icon name="Trash2" size={12} />
                           </Button>
                         </div>
                       </div>
+                    ))}
+                  </div>
+
+                  {selectedSkill && (
+                    <div className="mt-6 p-4 bg-purple-600/10 border border-purple-500 rounded">
+                      <h4 className="font-semibold mb-3">Добавить прогресс</h4>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => addXPToSkill(selectedSkill, 1 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          +1
+                        </Button>
+                        <Button
+                          onClick={() => addXPToSkill(selectedSkill, 5 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          +5
+                        </Button>
+                        <Button
+                          onClick={() => addXPToSkill(selectedSkill, 10 * skills.find(s => s.id === selectedSkill)!.xpPerUnit)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          +10
+                        </Button>
+                      </div>
                     </div>
-                  ))}
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Goals Section */}
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-orange-400 flex items-center gap-2">
+                    <Icon name="Target" size={20} />
+                    Цели для: Словарный запас
+                  </CardTitle>
+                  <Dialog open={isAddingGoal} onOpenChange={setIsAddingGoal}>
+                    <DialogTrigger asChild>
+                      <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
+                        <Icon name="Plus" size={16} />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-gray-800 border-gray-700 text-white">
+                      <DialogHeader>
+                        <DialogTitle>Добавить цель</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Название цели</Label>
+                          <Input
+                            value={newGoal.title}
+                            onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
+                            className="bg-gray-900 border-gray-600"
+                          />
+                        </div>
+                        <div>
+                          <Label>Награда (XP)</Label>
+                          <Input
+                            type="number"
+                            value={newGoal.reward}
+                            onChange={(e) => setNewGoal({ ...newGoal, reward: parseInt(e.target.value) || 10 })}
+                            className="bg-gray-900 border-gray-600"
+                          />
+                        </div>
+                        <div>
+                          <Label>Связанный навык</Label>
+                          <select
+                            value={newGoal.linkedSkillId}
+                            onChange={(e) => setNewGoal({ ...newGoal, linkedSkillId: e.target.value })}
+                            className="w-full p-2 bg-gray-900 border border-gray-600 rounded text-white"
+                          >
+                            <option value="">Выберите навык</option>
+                            {skills.map(skill => (
+                              <option key={skill.id} value={skill.id}>{skill.name}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <Button onClick={addGoal} className="bg-orange-600 hover:bg-orange-700">
+                          Добавить
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {goals.map((goal) => (
+                      <div
+                        key={goal.id}
+                        className={`p-3 rounded border transition-all ${
+                          goal.completed 
+                            ? 'bg-green-600/10 border-green-500 line-through opacity-60' 
+                            : 'bg-gray-700/50 border-gray-600 hover:border-orange-500'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className={goal.completed ? 'line-through' : ''}>{goal.title}</span>
+                          <div className="flex gap-1">
+                            {!goal.completed && (
+                              <Button
+                                size="sm"
+                                className="bg-green-600 hover:bg-green-700"
+                                onClick={() => completeGoal(goal.id)}
+                              >
+                                <Icon name="Check" size={12} />
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="hover:bg-red-500/20"
+                              onClick={() => deleteGoal(goal.id)}
+                            >
+                              <Icon name="Trash2" size={12} />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="rewards" className="space-y-6">
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-orange-400">Награды</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <Icon name="Star" size={48} className="mx-auto mb-4 text-orange-400" />
+                  <h3 className="text-xl font-semibold mb-2">Система наград</h3>
+                  <p className="text-gray-400">Здесь будут отображаться ваши достижения и награды</p>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="rewards" className="space-y-6">
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-orange-400">Награды</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <Icon name="Star" size={48} className="mx-auto mb-4 text-orange-400" />
-                <h3 className="text-xl font-semibold mb-2">Система наград</h3>
-                <p className="text-gray-400">Здесь будут отображаться ваши достижения и награды</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )
